@@ -1,0 +1,152 @@
+::-webkit-scrollbar{
+    width: 7px;
+    height: 7px;
+    }
+    ::-webkit-scrollbar-thumb{
+    background: #000000;
+    border: 5px none #212121;
+    border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+    background: #FFFFFF;
+    }
+    ::-webkit-scrollbar-track{
+    background: #212121;
+    border: 5px none #525252;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 0px 0px #000000;
+    }
+
+.container2{
+    padding-top: 110px;
+
+}
+
+
+.captcha{
+    margin: 0 auto;
+    width: 304px;
+    padding-bottom: 25px;    
+}
+
+
+.especialpadd{
+    padding-bottom: 30px;
+}
+
+.especialpadd2{
+    padding-bottom: 10px;
+}
+
+.especialpadd3{
+    padding-bottom: 40px;
+    padding-top: 50px;
+}
+
+.especialpaddDev{
+    padding-bottom: 100px;
+    padding-top: 100px;
+}
+
+.especialpadd4{
+    padding-bottom: 50px;
+}
+
+.video-title{
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+
+.video-data{
+    padding-bottom: 5px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.like-button{
+    text-align: right;
+    padding-bottom: 20px;
+    padding-right: 30px;
+}
+
+.profile-image{
+    border-radius: 50%;
+}
+
+.profile-card{
+    background-color: white;
+    padding: 50px;
+}
+
+.biography{
+    text-align: end;
+}
+
+.userSpace{
+    padding-bottom: 20px;
+}
+
+.userPosted{
+    text-align: center;
+   
+}
+
+.imglaptop{ 
+    height:100%;
+}
+
+.relativePosition{
+    display: flex;
+}
+
+.video-data2{
+    font-size: 20px !important;
+}
+
+.custom-space{
+    padding-bottom: 40px;
+    padding-top: 70px;
+}
+
+.custom-space2{
+    padding-top: 10px;
+}
+
+.custom-space3{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.custom-text-white{
+    color: white;
+}
+
+.unknowpadd{
+    padding-bottom: 500px;
+    padding-top: 500px;
+}
+
+.unknowpadd2{
+    padding-bottom: 200px;
+    padding-top: 200px;
+}
+
+.biography2{
+    font-size: 20px !important;
+}
+
+.labelimg{
+    padding: 20px;
+}
+
+.log{
+    padding: 20px;
+}
+
+.userSpace2{
+    padding-bottom: 40px;
+}
+
+.userSpace3{
+    padding-top: 30px;
+}

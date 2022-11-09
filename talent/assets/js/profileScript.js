@@ -1,0 +1,1 @@
+function triggerClick(){document.querySelector("#profileImage").click()}function displayImage(e){if(e.files[0]){var t=new FileReader;t.onload=function(e){document.querySelector("#profileDisplay").setAttribute("src",e.target.result)},t.readAsDataURL(e.files[0])}}
