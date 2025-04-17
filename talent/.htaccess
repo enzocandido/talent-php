@@ -1,11 +1,30 @@
 RewriteEngine on
 
-# Redireciona para HTTPS se estiver na porta 80
+# Redireciona para HTTPS se estiver na porta 80 (deixado comentado para desenvolvimento local)
 #RewriteCond %{SERVER_PORT} 80
 #RewriteRule ^(.*)$ https://thetalent.site/$1 [R,L]
 
+# Prevenir acesso direto aos diretórios
+Options -Indexes
 
-# Reescreve as URLs
+# Bloquear acesso a arquivos sensíveis
+<FilesMatch "^(\.env|composer\.(json|lock)|package(-lock)?\.json|Dockerfile|docker-compose\.yml|README\.md)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Prevenir visualização de pastas
+Options -Indexes
+
+# Definir cabeçalhos de segurança
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Reescreve URLs sem extensão .php
 RewriteCond %{REQUEST_FILENAME} !-d 
 RewriteCond %{REQUEST_FILENAME}\.php -f 
 RewriteRule ^(.*)$ $1.php [L]

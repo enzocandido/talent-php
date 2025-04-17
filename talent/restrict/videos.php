@@ -5,16 +5,32 @@
     if(isset($_POST['getVideos'])){
         $start = $conexao->real_escape_string($_POST['start']);
         $limit = $conexao->real_escape_string($_POST['limit']);
-        $sql = ("SELECT * FROM videos ORDER BY RAND() LIMIT $start, $limit");
+        
+        $sql = "SELECT v.*, u.usuario, u.nome 
+                FROM videos v 
+                JOIN usuario u ON v.usuario_id = u.usuario_id 
+                ORDER BY RAND() 
+                LIMIT $start, $limit";
+        
         $res = mysqli_query($conexao, $sql);
+        
+        if (!$res) {
+            exit('erro: ' . mysqli_error($conexao));
+        }
+        
         if(mysqli_num_rows($res) > 0){
             $response ="";
             while($video = mysqli_fetch_assoc($res)) {
                 if(isset($_SESSION['usuario'])){
                     $videoid = $video['id'];
                     $usuarioid = $_SESSION['usuario_id'];
-                    $q=mysqli_query($conexao, "SELECT id FROM likes WHERE userid='$usuarioid' and postid='$videoid'");
-                    if(mysqli_num_rows($q)==0){
+                    
+                    $q = mysqli_query($conexao, "SELECT id FROM likes WHERE usuario_id='$usuarioid' AND video_id='$videoid'");
+                    
+                    if (!$q) {
+                        $class = "btn btn-outline-danger btn-lg";
+                        $iclass = "far fa-heart";
+                    } else if(mysqli_num_rows($q) == 0){
                         $class = "btn btn-outline-danger btn-lg";
                         $iclass = "far fa-heart";
                     } else {
@@ -23,6 +39,7 @@
                     }
                 }
                 
+                $data_formatada = date('d/m/Y', strtotime($video['data_upload']));
 
                 if(isset($_SESSION['adm'])){
                 $response .='
@@ -55,7 +72,7 @@
                             </div>
                             <div class="video-data">
                                 <p> 
-                                    Postado em '.$video['dia_upload'].'
+                                    Postado em '.$data_formatada.'
                                 </p>
                             </div>
                             <form method="POST" action="restrict/like.php">
@@ -93,7 +110,7 @@
                             </div>
                             <div class="video-data">
                                 <p> 
-                                    Postado em '.$video['dia_upload'].'
+                                    Postado em '.$data_formatada.'
                                 </p>
                             </div>
                             <form method="POST" action="restrict/like.php">
@@ -131,7 +148,7 @@
                             </div>
                             <div class="video-data">
                                 <p> 
-                                    Postado em '.$video['dia_upload'].'
+                                    Postado em '.$data_formatada.'
                                 </p>
                             </div>
                             <h3 class="video-data like-button">

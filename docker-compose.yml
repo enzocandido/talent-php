@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  webserver:
+    image: php:8.0-apache
+    container_name: talent-php-webserver
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - DOCKER_ENVIRONMENT=true
+    command: >
+      bash -c "a2enmod rewrite &&
+               sed -ri -e 's!/var/www/html!/var/www/html!g' /etc/apache2/sites-available/*.conf &&
+               sed -ri -e 's!/var/www/!/var/www/html!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
+               apt-get update &&
+               apt-get install -y libzip-dev zip unzip &&
+               docker-php-ext-install mysqli pdo pdo_mysql zip &&
+               apache2-foreground"
+
+  db:
+    image: mariadb:10.4
+    container_name: talent-php-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: talentdb
+      MYSQL_USER: talent
+      MYSQL_PASSWORD: talent
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./talentdb.sql:/docker-entrypoint-initdb.d/talentdb.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: talent-php-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - db
+
+volumes:
+  db_data:

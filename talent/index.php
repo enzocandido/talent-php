@@ -1,4 +1,6 @@
 <?php
+    require_once "../app/config.php";
+    
     session_start();
     include "../app/conection.php";
     include "restrict/navbar.php";

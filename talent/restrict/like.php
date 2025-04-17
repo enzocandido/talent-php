@@ -3,27 +3,57 @@
     session_start();
 
     if(isset($_POST['like-video'])){
-        $post_id = $_POST['postid'];
+        $video_id = $_POST['postid'];
         $headerlocal = $_POST['headerlocal'];
-        $user_id = $_SESSION['usuario_id'];
-        $liked = "lik";
-        $desliked = "des";
-        $sql = "SELECT `userid`, `postid` FROM `likes` WHERE userid = '$user_id' and postid = '$post_id'";
+        $usuario_id = $_SESSION['usuario_id'];
+        
+        $sql = "SELECT `usuario_id`, `video_id` FROM `likes` WHERE usuario_id = '$usuario_id' AND video_id = '$video_id'";
         $res = $conexao->query($sql);
+        
+        if (!$res) {
+            $_SESSION['like_error'] = "Erro ao verificar like: " . mysqli_error($conexao);
+            header("Location: ../$headerlocal");
+            exit();
+        }
+        
         if($res->num_rows == 0){
-            $sql2 = "UPDATE `videos` SET `likes`=likes+1 WHERE id='$post_id'";
+            $sql2 = "UPDATE `videos` SET `likes`= likes + 1 WHERE id = '$video_id'";
             if($conexao->query($sql2)){
-                $sql3="INSERT INTO `likes`(`userid`, `postid`) VALUES ('$user_id','$post_id')";
-                $conexao->query($sql3);
+                $sql3 = "INSERT INTO `likes`(`usuario_id`, `video_id`) VALUES ('$usuario_id', '$video_id')";
+                if ($conexao->query($sql3)) {
+                    header("Location: ../$headerlocal");
+                    exit();
+                } else {
+                    $_SESSION['like_error'] = "Erro ao registrar like: " . mysqli_error($conexao);
+                    header("Location: ../$headerlocal");
+                    exit();
+                }
+            } else {
+                $_SESSION['like_error'] = "Erro ao atualizar contador de likes: " . mysqli_error($conexao);
                 header("Location: ../$headerlocal");
+                exit();
             }
-        } else if($res->num_rows ==1){
-            $sql2 = "UPDATE `videos` SET `likes`=likes-1 WHERE id='$post_id'";
+        } 
+        else if($res->num_rows == 1){
+            $sql2 = "UPDATE `videos` SET `likes`= likes - 1 WHERE id = '$video_id'";
             if($conexao->query($sql2)){
-                $sql3="DELETE FROM `likes` WHERE userid = '$user_id' and postid = '$post_id'";
-                $conexao->query($sql3);
+                $sql3 = "DELETE FROM `likes` WHERE usuario_id = '$usuario_id' AND video_id = '$video_id'";
+                if ($conexao->query($sql3)) {
+                    header("Location: ../$headerlocal");
+                    exit();
+                } else {
+                    $_SESSION['like_error'] = "Erro ao remover like: " . mysqli_error($conexao);
+                    header("Location: ../$headerlocal");
+                    exit();
+                }
+            } else {
+                $_SESSION['like_error'] = "Erro ao atualizar contador de likes: " . mysqli_error($conexao);
                 header("Location: ../$headerlocal");
+                exit();
             }
         }
+    } else {
+        header("Location: ../index");
+        exit();
     }
 ?>

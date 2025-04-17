@@ -58,9 +58,17 @@
         </h4>
 
         <?php
-            $sql = "SELECT * FROM videos WHERE usuario= '$usuario' ORDER BY id DESC";
+            $usuario_id = $_SESSION['usuario_id'];
+            
+            $sql = "SELECT * FROM videos WHERE usuario_id = $usuario_id ORDER BY id DESC";
             $res = mysqli_query($conexao, $sql);
-            if(mysqli_num_rows($res) > 0){
+            
+            if (!$res) {
+                echo '<div class="shadow-none p-3 mb-5 bg-custom rounded especialpadd">';
+                echo '<h3 class="text-center">Erro ao buscar vídeos: ' . mysqli_error($conexao) . '</h3>';
+                echo '</div>';
+            } 
+            elseif(mysqli_num_rows($res) > 0){
                 while($video = mysqli_fetch_assoc($res)) {
         ?>
 
@@ -83,7 +91,7 @@
             </div>
             <div class="video-data">
                 <p> 
-                    Postado em <?=$video['dia_upload']?>
+                    Postado em <?=date('d/m/Y', strtotime($video['data_upload']))?>
                 </p>
             </div>
             <h3 class="video-data like-button">

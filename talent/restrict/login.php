@@ -18,8 +18,6 @@
                 $admin = "SELECT adm from usuario where usuario = '{$usuario}' and adm = 1";
                 $adm = mysqli_query($conexao, $admin);
 
-                session_start();
-
                 if(mysqli_num_rows($adm) == 1){
                     $_SESSION['adm'] = $usuario;
                     $_SESSION['id'] = $usuario_bd['usuario_id'];
@@ -29,6 +27,7 @@
                     $_SESSION['nome'] = $usuario_bd['nome'];
                     unset($_SESSION['nao_autenticado']);
                     header('Location: admin.php');
+                    exit();
                 } else {
                     $_SESSION['usuario']= $usuario;
                     $_SESSION['id'] = $usuario_bd['usuario_id'];
@@ -37,6 +36,7 @@
                     $_SESSION['nome'] = $usuario_bd['nome'];
                     unset($_SESSION['nao_autenticado']);
                     header('Location: ../index');
+                    exit();
                 }
 
             } else {
@@ -46,6 +46,7 @@
                 $_SESSION['nao_autenticado'] = 0;
             }
             header('Location: ../index');
+            exit();
             }
 
     } else {

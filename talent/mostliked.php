@@ -19,7 +19,7 @@
                     $video_likes = $video['likes'];
                     $usuarioid = $_SESSION['usuario_id'];
                     $videoid = $video['id'];
-                    $q=mysqli_query($conexao, "SELECT id FROM likes WHERE userid='$usuarioid' and postid='$videoid'");
+                    $q=mysqli_query($conexao, "SELECT id FROM likes WHERE usuario_id='$usuarioid' and video_id='$videoid'");
                     if(mysqli_num_rows($q)==0){
                         $class = "btn btn-outline-danger btn-lg";
                         $iclass = "far fa-heart";
